@@ -36,18 +36,8 @@ public class Menu {
         editbuttons();
     }
     
-    public void loadfile(Stage stage, ArrayList<Produto> pdt){
-        bdata.setOnAction(ev -> {
-          Map json = null;
-          Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-          alert.setTitle("Atenção");
-          alert.setContentText("Voce deseja carregar um arquivo de dados(json) local?");
-          Optional<ButtonType> result = alert.showAndWait();
-          if(result.get() == ButtonType.OK){
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Open Resource File");
-            fileChooser.getExtensionFilters().addAll(new ExtensionFilter("JSON Files", "*.json"));
-            File file = fileChooser.showOpenDialog(stage);
+    public void loadfile(Stage stage, ArrayList<Produto> pdt, File file){
+            Map json = null;
             if(file != null){
               JSONParsing engine = new JSONParsing();
                 try {
@@ -71,21 +61,26 @@ public class Menu {
             else if(jsoncolumn.size() == 4){
                 if(pdt != null){
                     for(int i = 0; i < jsondata.size(); i++){
-                        int index;
-                        for(index = 0; index < pdt.size(); index++){
-                            if(pdt.get(index).Nome == (String) jsondata.get(index).get(0))
+                        int index = -1;
+                        for(int j = 0; j < pdt.size(); j++){
+                            if(pdt.get(j).Nome == (String) jsondata.get(i).get(0)){
+                                index = j;
                                 break;
+                            }
                         }
                         SimpleDateFormat sd = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
                         try {
                             Date date = sd.parse((String) jsondata.get(i).get(1));
                             Calendar cal = Calendar.getInstance();
+                            
                             cal.setTime(date);
                             Remessa remessa = new Remessa(cal, (int) jsondata.get(i).get(2), (int) jsondata.get(i).get(3));
-                            pdt.get(index).setRemessa(remessa);
+                            if(index != -1)
+                                pdt.get(index).setRemessa(remessa);
                         } catch (ParseException ex) {
                             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                        System.out.println("aqui");
                     }
                 }
                 else{
@@ -93,11 +88,9 @@ public class Menu {
                 }
             }
             System.out.println(jsondata.toString());
-          }
           if (json == null){
               System.out.println("Erro na leitura do arquivo.");
           }
-      });
     }
     
     public void editbuttons(){
