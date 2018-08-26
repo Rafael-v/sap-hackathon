@@ -63,7 +63,8 @@ public class Menu {
                     for(int i = 0; i < jsondata.size(); i++){
                         int index = -1;
                         for(int j = 0; j < pdt.size(); j++){
-                            if(pdt.get(j).Nome == (String) jsondata.get(i).get(0)){
+                            
+                            if(pdt.get(j).Nome.compareTo((String) jsondata.get(i).get(0)) == 0){
                                 index = j;
                                 break;
                             }
@@ -72,15 +73,14 @@ public class Menu {
                         try {
                             Date date = sd.parse((String) jsondata.get(i).get(1));
                             Calendar cal = Calendar.getInstance();
-                            
                             cal.setTime(date);
                             Remessa remessa = new Remessa(cal, (int) jsondata.get(i).get(2), (int) jsondata.get(i).get(3));
-                            if(index != -1)
-                                pdt.get(index).setRemessa(remessa);
+                            if(index != -1){
+                                pdt.get(index).setRemessa(remessa);}
                         } catch (ParseException ex) {
                             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
                         }
-                        System.out.println("aqui");
+                       
                     }
                 }
                 else{

@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -20,6 +21,7 @@ import javafx.geometry.Pos;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -38,6 +40,7 @@ public class Hackathon extends Application {
     Label label1, label2, label3;
     String dia, mes, ano;
     int id;
+    VBox botoes = new VBox();
     
     public Hackathon() {
         list = new ListView<String>();
@@ -57,17 +60,19 @@ public class Hackathon extends Application {
         BorderPane borderPane = new BorderPane();
         Menu menu = new Menu();
         System.out.println("cuzao");
-        File file = new File("C:\\Users\\rafae\\Documents\\NetBeansProjects\\hackathon\\src\\hackathon\\produto.json");
+        File file = new File("src/hackathon/produto.json");
         System.out.println("cuzao");
         menu.loadfile(stage, pdt, file);
         System.out.println("cuzao");
-        File file2 = new File("C:\\Users\\rafae\\Documents\\NetBeansProjects\\hackathon\\src\\hackathon\\remessa.json");
+        File file2 = new File("/home/natan/Downloads/sap-hackathon-master/hackathon/Hackaton/src/hackathon/remessa.json");
         menu.loadfile(stage, pdt, file2);
         
         borderPane.setTop(getTop());
         borderPane.setLeft(getLeft());
         borderPane.setCenter(getCenter());
 
+        
+        
         Scene scene = new Scene(borderPane, 700, 600);
         stage.setScene(scene);
         stage.setTitle("Redutor de Perdas");
@@ -122,10 +127,10 @@ public class Hackathon extends Application {
         p.setStyle("-fx-padding: 40.0;");
         
         
-        VBox botoes = new VBox();
+    
         botoes.setSpacing(10);
         botoes.setAlignment(Pos.CENTER);
-        botoes.getChildren().addAll(hb, p, label3, new Separator());
+        botoes.getChildren().addAll(hb, p, label3);
         botoes.setStyle("-fx-padding: 40.0;");
         
         
@@ -140,6 +145,54 @@ public class Hackathon extends Application {
         
         System.out.println(String.valueOf(getSoma()));
         label2.setText(String.valueOf(getSoma()));
+        
+        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        
+        LineChart<Number,Number> lineChart;
+        
+        xAxis.setLabel("Month");
+        
+        lineChart = new LineChart<Number,Number>(xAxis,yAxis);
+        
+        lineChart.setTitle("Grafico de Unidades");
+        lineChart.setTranslateZ(-100);
+        
+        
+        XYChart.Series series1 = new XYChart.Series();
+        series1.setName("Produtos Recebidos");
+        
+        XYChart.Series series2 = new XYChart.Series();
+        series1.setName("Produtos Perdidos");
+        
+        XYChart.Series series3 = new XYChart.Series();
+        series1.setName("Produtos Vendidos");
+        
+        Calendar cal;
+        cal = Calendar.getInstance();
+        SimpleDateFormat sd = new SimpleDateFormat("MM-dd-yyyy 00:00:00");
+        try{
+            Date date = sd.parse(mes + '-' + dia + '-' + ano + " 00:00:00");
+            cal.setTime(date);
+        } catch (ParseException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        List<Remessa> r = pdt.get(id).Busca_Dados_Dia(cal);
+        
+        for(Remessa i: r){
+            series1.getData().add(new XYChart.Data(i.Qtd_Entrada,i.Data_Entrada.get(Calendar.DAY_OF_MONTH)));
+            
+            series2.getData().add(new XYChart.Data(i.Qtd_Perda,i.Data_Entrada.get(Calendar.DAY_OF_MONTH)));
+            
+            series3.getData().add(new XYChart.Data(i.Qtd_Entrada-i.Qtd_Perda,i.Data_Entrada.get(Calendar.DAY_OF_MONTH)));
+        }
+        
+        lineChart.getData().addAll(series1,series2,series3);
+        
+        lineChart.setMaxSize(400, 250);
+        
+        botoes.getChildren().add(lineChart);
     }
     
     private double getSoma() {
@@ -165,8 +218,10 @@ public class Hackathon extends Application {
             System.out.println(pdt.get(i).getNome());
         }
         
-        ObservableList<String> items =FXCollections.observableArrayList (
-            "Cenoura", "Carne", "Batata", "Presunto");
+        ObservableList<String> items =FXCollections.observableArrayList ();
+        for(Produto p: pdt){
+            items.add(p.getNome());
+        }
         
         list.setItems(items);
         list.setPrefWidth(150);

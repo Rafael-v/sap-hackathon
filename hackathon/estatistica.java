@@ -23,7 +23,7 @@ public class estatistica {
             double ent = i.Qtd_Entrada;
             double perd = i.Qtd_Perda;
             tot.add(ent-perd);
-            System.out.println(ent + ' ' + perd);
+            System.out.println(ent + "" + perd);
         }
         
         return med(tot);
