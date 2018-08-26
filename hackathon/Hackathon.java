@@ -48,32 +48,22 @@ public class Hackathon extends Application {
         label1 = new Label();
         label2 = new Label();
         label3 = new Label();
-        
-        pdt.add(new Produto("Abacaxi", 1, 2, "asda"));
-        pdt.add(new Produto("Maca", 1, 0, "asdfasa"));
-        pdt.add(new Produto("Pera", 1, (float)0, "asfsda"));
-        pdt.add(new Produto("Abacate", 1, (float)0, "afasfassda"));
     }
 
     @Override
     public void start(Stage stage) {
         BorderPane borderPane = new BorderPane();
         Menu menu = new Menu();
-        System.out.println("cuzao");
         File file = new File("src/hackathon/produto.json");
-        System.out.println("cuzao");
         menu.loadfile(stage, pdt, file);
-        System.out.println("cuzao");
-        File file2 = new File("/home/natan/Downloads/sap-hackathon-master/hackathon/Hackaton/src/hackathon/remessa.json");
+        File file2 = new File("src/hackathon/remessa.json");
         menu.loadfile(stage, pdt, file2);
         
         borderPane.setTop(getTop());
         borderPane.setLeft(getLeft());
         borderPane.setCenter(getCenter());
 
-        
-        
-        Scene scene = new Scene(borderPane, 700, 600);
+        Scene scene = new Scene(borderPane, 700, 700);
         stage.setScene(scene);
         stage.setTitle("Redutor de Perdas");
         stage.setResizable(false);
@@ -104,7 +94,7 @@ public class Hackathon extends Application {
         label1 = new Label("PRODUTO: " + "-");
         label1.setStyle("-fx-font: 26px \"Georgia\"; -fx-text-fill: black; -fx-padding: 30 50;");
        
-        Image img = new Image("File:src/imagem.png", true);
+        Image img = new Image("File:src/hackathon/abacaxi.jpg", true);
         ImageView imageView = new ImageView(img);
         imageView.setFitHeight(90);
         imageView.setFitWidth(90);
@@ -116,8 +106,7 @@ public class Hackathon extends Application {
         label2 = new Label("-");
         label2.setStyle("-fx-font: 24px \"Georgia\"; -fx-text-fill: black");
         
-        String str = "nada";
-        label3 = new Label("OBSERVAÇÕES: " + str);
+        label3 = new Label("OBSERVAÇÕES: -");
         label3.setStyle("-fx-font: 16px \"Georgia\"; -fx-text-fill: black; -fx-padding: 20px");
         
         HBox p = new HBox();
@@ -126,8 +115,6 @@ public class Hackathon extends Application {
         p.getChildren().addAll(msg1, label2);
         p.setStyle("-fx-padding: 40.0;");
         
-        
-    
         botoes.setSpacing(10);
         botoes.setAlignment(Pos.CENTER);
         botoes.getChildren().addAll(hb, p, label3);
@@ -146,25 +133,26 @@ public class Hackathon extends Application {
         System.out.println(String.valueOf(getSoma()));
         label2.setText(String.valueOf(getSoma()));
         
+        label3.setText("OBSERVAÇÕES:\n" + pdt.get(id).getObservacoes());
+        
         final NumberAxis xAxis = new NumberAxis();
         final NumberAxis yAxis = new NumberAxis();
         
         LineChart<Number,Number> lineChart;
         
-        xAxis.setLabel("Month");
+        xAxis.setLabel("Dias");
         
         lineChart = new LineChart<Number,Number>(xAxis,yAxis);
         
         lineChart.setTitle("Grafico de Unidades");        
         
         XYChart.Series series1 = new XYChart.Series();
-        series1.setName("Produtos Recebidos");
         
         XYChart.Series series2 = new XYChart.Series();
-        series1.setName("Produtos Perdidos");
         
         XYChart.Series series3 = new XYChart.Series();
-        series1.setName("Produtos Vendidos");
+        
+        lineChart.setPrefHeight(300);
         
         Calendar cal;
         cal = Calendar.getInstance();
@@ -186,6 +174,7 @@ public class Hackathon extends Application {
             series3.getData().add(new XYChart.Data(i.Data_Entrada.get(Calendar.DAY_OF_MONTH), i.Qtd_Entrada-i.Qtd_Perda));
         }
         
+        lineChart.getData().removeAll();
         lineChart.getData().addAll(series1,series2,series3);
         
         lineChart.setMaxSize(400, 250);
@@ -223,7 +212,7 @@ public class Hackathon extends Application {
         
         list.setItems(items);
         list.setPrefWidth(150);
-        list.setPrefHeight(370);
+        list.setPrefHeight(470);
         
         Label labelData = new Label("Data para busca:");
         labelData.setStyle("-fx-font: 16px \"Georgia\"; -fx-text-fill: black");
