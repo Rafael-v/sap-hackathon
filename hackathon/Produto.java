@@ -1,6 +1,4 @@
-// 
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -45,7 +43,7 @@ public class Produto {
         return Dados;
     }
     
-    public List<Remessa> Busca_Dados_Season(SimpleDateFormat data){
+    public List<Remessa> Busca_Dados_Season(Calendar data){
         List<Remessa> Retorno = new ArrayList();
         int season = Converte_Data_Season(data);
         
@@ -57,11 +55,11 @@ public class Produto {
         return Retorno;
     }
     
-    private int Converte_Data_Season(SimpleDateFormat Data){
-        return Data.getCalendar().get(Calendar.MONTH) / 3;
+    private int Converte_Data_Season(Calendar Data){
+        return Data.get(Calendar.MONTH) / 3;
     }
     
-    public List<Remessa> Busca_Dados_Semana(SimpleDateFormat data){
+    public List<Remessa> Busca_Dados_Semana(Calendar data){
         List<Remessa> Retorno = new ArrayList();
         int sem = Converte_Data_Semana(data);
         
@@ -74,11 +72,11 @@ public class Produto {
         
     }
     
-    private int Converte_Data_Semana(SimpleDateFormat Data){
-        return Data.getCalendar().get(Calendar.WEEK_OF_MONTH);
+    private int Converte_Data_Semana(Calendar Data){
+        return Data.get(Calendar.WEEK_OF_MONTH);
     }
     
-    public List<Remessa> Busca_Dados_Dia(SimpleDateFormat data){
+    public List<Remessa> Busca_Dados_Dia(Calendar data){
         List<Remessa> Retorno = new ArrayList();
         int dia = Converte_Data_Dia(data);
         
@@ -91,26 +89,25 @@ public class Produto {
         
     }
     
-    private int Converte_Data_Dia(SimpleDateFormat Data){
-        return Data.getCalendar().get(Calendar.DAY_OF_WEEK);
+    private int Converte_Data_Dia(Calendar Data){
+        return Data.get(Calendar.DAY_OF_WEEK);
     }
     
     
     public class Remessa {
-        SimpleDateFormat Data_Entrada;  // Data de chega da Remessa
+        Calendar Data_Entrada;  // Data de chega da Remessa
         int Qtd_Entrada;      // Numero de unidades presentes nesta remessa no momento da entrada
         int Qtd_Perda;        // Numero de unidades presentes nesta remessa que foram perdidas 
     
         
-        Remessa(SimpleDateFormat sdf, int e, int p){
+        Remessa(Calendar sdf, int e, int p){
             Data_Entrada = sdf;
             Qtd_Entrada = e;
             Qtd_Perda = p;
         }
         
         public int Busca_Season(int Season){
-            Calendar c = this.Data_Entrada.getCalendar();
-            int month = c.get(Calendar.MONTH);
+            int month = this.Data_Entrada.get(Calendar.MONTH);
             
             if (month > (Season-1)*3 && month < (Season)*3)
                 return 1;
@@ -118,18 +115,18 @@ public class Produto {
         }
         
         public int Busca_Semana(int semana){
-            if (this.Data_Entrada.getCalendar().get(Calendar.WEEK_OF_MONTH) == semana)
+            if (this.Data_Entrada.get(Calendar.WEEK_OF_MONTH) == semana)
                 return 1;
             return 0;
         }
         
         public int Busca_Dia(int dia){
-            if (this.Data_Entrada.getCalendar().get(Calendar.DAY_OF_WEEK) == dia)
+            if (this.Data_Entrada.get(Calendar.DAY_OF_WEEK) == dia)
                 return 1;
             return 0;
         }
 
-        public SimpleDateFormat getData_Entrada() {
+        public Calendar getData_Entrada() {
             return Data_Entrada;
         }
 
@@ -143,4 +140,5 @@ public class Produto {
         
     }
 }
+
 
