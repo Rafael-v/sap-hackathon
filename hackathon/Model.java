@@ -9,12 +9,36 @@ import java.util.List;
 public class Produto {
     long Codigo;                   // Id do produto no Varejo
     int Categoria;                 // Categoria na qual o produto se encontra(Frutas/Vegetais/Carnes)
-    float Preço_Ideal;             // Preço ideal levando em conta média de preços geral do produto
+    float Preco_Ideal;             // Preço ideal levando em conta média de preços geral do produto
     String Observacoes;            // Detalhes do produto que podem ser importantes para considerar
     List<Remessa> Dados;           // Cada remessa de entrada daquele produto no varejo, diferentes datas = diferentes quantidades
 
-    Produto(){
-        
+    Produto(long c, int cat, float p, String obs, List<Remessa> r){
+        Codigo = c;
+        Categoria = cat;
+        Preco_Ideal = p;
+        Observacoes = obs;
+        Dados = r;
+    }
+
+    public long getCodigo() {
+        return Codigo;
+    }
+
+    public int getCategoria() {
+        return Categoria;
+    }
+
+    public float getPreço_Ideal() {
+        return Preco_Ideal;
+    }
+
+    public String getObservacoes() {
+        return Observacoes;
+    }
+
+    public List<Remessa> getDados() {
+        return Dados;
     }
     
     public List<Remessa> Busca_Dados_Season(SimpleDateFormat data){
@@ -73,6 +97,13 @@ public class Produto {
         int Qtd_Entrada;      // Numero de unidades presentes nesta remessa no momento da entrada
         int Qtd_Perda;        // Numero de unidades presentes nesta remessa que foram perdidas 
     
+        
+        Remessa(SimpleDateFormat sdf, int e, int p){
+            Data_Entrada = sdf;
+            Qtd_Entrada = e;
+            Qtd_Perda = p;
+        }
+        
         public int Busca_Season(int Season){
             Calendar c = this.Data_Entrada.getCalendar();
             int month = c.get(Calendar.MONTH);
@@ -93,6 +124,19 @@ public class Produto {
                 return 1;
             return 0;
         }
+
+        public SimpleDateFormat getData_Entrada() {
+            return Data_Entrada;
+        }
+
+        public int getQtd_Entrada() {
+            return Qtd_Entrada;
+        }
+
+        public int getQtd_Perda() {
+            return Qtd_Perda;
+        }
+        
     }
 }
 
