@@ -21,6 +21,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Project extends Application {
     
@@ -71,11 +73,17 @@ public class Project extends Application {
         produto.setStyle("-fx-font: 26px \"Georgia\"; -fx-text-fill: black");
         
         
-        Image img = new Image("File:src/myplanarity/back.png", true);
-        ImageView imageView = new ImageView(image);
+
+       
+        Image img = new Image("File:src/ooo.png", true);
+        ImageView imageView = new ImageView(img);
+        imageView.setFitHeight(90);
+        imageView.setFitWidth(90);
+        
         
         hb.getChildren().add(produto);
         hb.getChildren().add(imageView);
+     
         
         
         Label msg1 = new Label("Quantia estimada para compra:");
