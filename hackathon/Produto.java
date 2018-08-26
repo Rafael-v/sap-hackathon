@@ -18,6 +18,7 @@ public class Produto {
         Preco_Ideal = p;
         Observacoes = obs;
         Dados = new ArrayList<Remessa>();
+        System.out.println("anal");
     }
     
     public void setRemessa(Remessa s){
@@ -86,6 +87,7 @@ public class Produto {
                 Retorno.add(i);
             }
         }
+        System.out.println(Retorno.size() + 'a');
         return Retorno;
         
     }
