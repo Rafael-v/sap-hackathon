@@ -155,9 +155,7 @@ public class Hackathon extends Application {
         
         lineChart = new LineChart<Number,Number>(xAxis,yAxis);
         
-        lineChart.setTitle("Grafico de Unidades");
-        lineChart.setTranslateZ(-100);
-        
+        lineChart.setTitle("Grafico de Unidades");        
         
         XYChart.Series series1 = new XYChart.Series();
         series1.setName("Produtos Recebidos");
@@ -181,11 +179,11 @@ public class Hackathon extends Application {
         List<Remessa> r = pdt.get(id).Busca_Dados_Dia(cal);
         
         for(Remessa i: r){
-            series1.getData().add(new XYChart.Data(i.Qtd_Entrada,i.Data_Entrada.get(Calendar.DAY_OF_MONTH)));
+            series1.getData().add(new XYChart.Data(i.Data_Entrada.get(Calendar.DAY_OF_MONTH), i.Qtd_Entrada));
             
-            series2.getData().add(new XYChart.Data(i.Qtd_Perda,i.Data_Entrada.get(Calendar.DAY_OF_MONTH)));
+            series2.getData().add(new XYChart.Data(i.Data_Entrada.get(Calendar.DAY_OF_MONTH), i.Qtd_Entrada));
             
-            series3.getData().add(new XYChart.Data(i.Qtd_Entrada-i.Qtd_Perda,i.Data_Entrada.get(Calendar.DAY_OF_MONTH)));
+            series3.getData().add(new XYChart.Data(i.Data_Entrada.get(Calendar.DAY_OF_MONTH), i.Qtd_Entrada-i.Qtd_Perda));
         }
         
         lineChart.getData().addAll(series1,series2,series3);
@@ -203,7 +201,7 @@ public class Hackathon extends Application {
             cal = Calendar.getInstance();
             cal.setTime(date);
             estatistica est = new estatistica();
-            return est.calcula_proc(pdt.get(id).Busca_Dados_Dia(cal));
+            return (int)est.calcula_proc(pdt.get(id).Busca_Dados_Dia(cal));
         } catch (ParseException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
