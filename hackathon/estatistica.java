@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import redutordeperdas.Produto.Remessa;
 
 public class estatistica {
 
