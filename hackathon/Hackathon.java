@@ -1,7 +1,9 @@
 package hackathon;
 
+import java.io.File;
 import java.util.ArrayList;
 import javafx.application.Application;
+import static javafx.application.Application.launch;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,7 +41,13 @@ public class Hackathon extends Application {
     public void start(Stage stage) {
         BorderPane borderPane = new BorderPane();
         Menu menu = new Menu();
-        menu.loadfile(stage, pdt);
+        
+        File file = new File("C:\\Users\\Dênes\\Desktop\\sap-hackathon-master\\hackathon\\produto.json");
+        
+        menu.loadfile(stage, pdt, file);
+        File file2 = new File("C:\\Users\\Dênes\\Desktop\\sap-hackathon-master\\hackathon\\remessa.json");
+
+        menu.loadfile(stage, pdt, file2);
         
         borderPane.setTop(getTop());
         borderPane.setLeft(getLeft());
