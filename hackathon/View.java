@@ -64,8 +64,19 @@ public class Project extends Application {
     private Pane getCenter() {
         Pane pane = new Pane();
         
+        HBox hb = new HBox();
+       
+        
         Label produto = new Label("PRODUTO: Abacaxi");
         produto.setStyle("-fx-font: 26px \"Georgia\"; -fx-text-fill: black");
+        
+        
+        Image img = new Image("File:src/myplanarity/back.png", true);
+        ImageView imageView = new ImageView(image);
+        
+        hb.getChildren().add(produto);
+        hb.getChildren().add(imageView);
+        
         
         Label msg1 = new Label("Quantia estimada para compra:");
         msg1.setStyle("-fx-font: 18px \"Georgia\"; -fx-text-fill: black");
@@ -86,7 +97,7 @@ public class Project extends Application {
         VBox botoes = new VBox();
         botoes.setSpacing(10);
         botoes.setAlignment(Pos.CENTER);
-        botoes.getChildren().addAll(produto, p, msg3, new Separator(), getGrafico());
+        botoes.getChildren().addAll(hb, p, msg3, new Separator(), getGrafico());
         botoes.setStyle("-fx-padding: 40.0;");
         
         
