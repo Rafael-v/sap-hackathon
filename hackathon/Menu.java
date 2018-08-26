@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
@@ -74,11 +73,12 @@ public class Menu {
                     pdt.add(ptemp);
                 }
             }
+            //Nao ta funcionando -- nao carregar o arquivo remessa
             else if(jsoncolumn.size() == 4){
                 if(pdt != null){
                     for(int i = 0; i < jsondata.size(); i++){
                         int index = searchpdt((int) jsondata.get(i).get(0));
-                        SimpleDateFormat sd = new SimpleDateFormat("MM:dd:yyyy HH:mm:ss");
+                        SimpleDateFormat sd = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
                         try {
                             Date date = sd.parse((String) jsondata.get(i).get(1));
                             Calendar cal = Calendar.getInstance();
