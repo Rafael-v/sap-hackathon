@@ -3,6 +3,12 @@ package hackathon;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,6 +18,7 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
@@ -22,15 +29,17 @@ import javax.script.ScriptException;
 public class Menu {
     Button bcad = new Button("Cadastro");
     Button bdata = new Button("Dados");
-    Button bgrafic = new Button("Graficos");
     private HttpJSONService http = new HttpJSONService();
+    private List<List> jsondata;
+    private List<List> jsoncolumn;
+    ArrayList<Produto> pdt = new ArrayList();
 
     Menu(VBox vb) {
         vb.setSpacing(10);
         vb.setPadding(new Insets(5,5,5,10));
         vb.setMaxWidth(80);
         vb.setStyle("-fx-background-color: #00008B;");
-        vb.getChildren().addAll(bcad, bdata, bgrafic);
+        vb.getChildren().addAll(bcad, bdata);
         editbuttons();
     }
     
@@ -56,9 +65,39 @@ public class Menu {
                     Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            jsondata = (List) json.get("DATA");
+            jsoncolumn = (List) json.get("COLUMNS");
+            if(jsoncolumn.size() == 3){
+                for(int i = 0; i < jsondata.size(); i++){
+                    List datai = (List) jsondata.get(i);
+                    Produto ptemp = new Produto((int) datai.get(0),(int) datai.get(1),(float) 0.0,(String) datai.get(2));
+                    pdt.add(ptemp);
+                }
+            }
+            else if(jsoncolumn.size() == 4){
+                if(pdt != null){
+                    for(int i = 0; i < jsondata.size(); i++){
+                        int index = searchpdt((int) jsondata.get(i).get(0));
+                        SimpleDateFormat sd = new SimpleDateFormat("MM:dd:yyyy HH:mm:ss");
+                        try {
+                            Date date = sd.parse((String) jsondata.get(i).get(1));
+                            Calendar cal = Calendar.getInstance();
+                            cal.setTime(date);
+                            Remessa remessa = new Remessa(cal, (int) jsondata.get(i).get(2), (int) jsondata.get(i).get(3));
+                            pdt.get(index).setRemessa(remessa);
+                        } catch (ParseException ex) {
+                            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                }
+                else{
+                    System.out.println("Produtos nao importados.");
+                }
+            }
+            System.out.println(jsondata.toString());
           }
-          if (json != null){
-            System.out.println("Erro na leitura do arquivo.");
+          if (json == null){
+              System.out.println("Erro na leitura do arquivo.");
           }
       });
     }
@@ -66,7 +105,6 @@ public class Menu {
     public void editbuttons(){
         bcad.setAlignment(Pos.CENTER);
         bdata.setAlignment(Pos.CENTER);
-        bgrafic.setAlignment(Pos.CENTER);
     }
     
     private String readFile(String pathname) throws IOException {
@@ -81,7 +119,15 @@ public class Menu {
             }
             return fileContents.toString();
         } finally {
-          scan.close();
+            scan.close();
         }
+    }
+    
+    public int searchpdt(int cod){
+        for(int i = 0; i < pdt.size(); i++){
+            if(pdt.get(i).Codigo == cod)
+                return i;
+        }
+        return -1;
     }
 }
