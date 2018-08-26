@@ -6,14 +6,14 @@ import java.util.List;
 
 
 public class Produto {
-    long Codigo;                   // Id do produto no Varejo
+    String Nome;                   // Nome do produto no Varejo
     int Categoria;                 // Categoria na qual o produto se encontra(Frutas/Vegetais/Carnes)
     float Preco_Ideal;             // Preço ideal levando em conta média de preços geral do produto
     String Observacoes;            // Detalhes do produto que podem ser importantes para considerar
     List<Remessa> Dados;           // Cada remessa de entrada daquele produto no varejo, diferentes datas = diferentes quantidades
 
-    Produto(long c, int cat, float p, String obs){
-        Codigo = c;
+    Produto(String c, int cat, float p, String obs){
+        Nome = c;
         Categoria = cat;
         Preco_Ideal = p;
         Observacoes = obs;
@@ -24,8 +24,8 @@ public class Produto {
         Dados.add(s);
     }
 
-    public long getCodigo() {
-        return Codigo;
+    public String getNome() {
+        return Nome;
     }
 
     public int getCategoria() {
