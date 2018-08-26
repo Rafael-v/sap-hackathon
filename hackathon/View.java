@@ -22,11 +22,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-public class View extends Application {
+public class Project extends Application {
     
     ListView<String> list;
     
-    public View() {
+    public Project() {
         list = new ListView<String>();
     }
 
@@ -34,9 +34,9 @@ public class View extends Application {
     public void start(Stage stage) {
         BorderPane borderPane = new BorderPane();
         
-        borderPane.setTop(paneTop());
-        borderPane.setLeft(paneLateral());
-        borderPane.setCenter(paneCentral());
+        borderPane.setTop(getTop());
+        borderPane.setLeft(getLeft());
+        borderPane.setCenter(getCenter());
 
         Scene scene = new Scene(borderPane, 700, 600);
         stage.setScene(scene);
@@ -45,7 +45,7 @@ public class View extends Application {
         stage.show();
     }
     
-    private Pane paneTop() {
+    private Pane getTop() {
         Pane pane = new Pane();
         
         Label label = new Label("INTERFACE PARA REDUÇÃO DE PERDAS");
@@ -61,7 +61,7 @@ public class View extends Application {
         return pane;
     }
 
-    private Pane paneCentral() {
+    private Pane getCenter() {
         Pane pane = new Pane();
         
         Label produto = new Label("PRODUTO: Abacaxi");
@@ -160,58 +160,61 @@ public class View extends Application {
         return lineChart;
     }
     
-    private Pane paneLateral() {
+    private Pane getLeft() {
         Pane central = new Pane();
         
         ObservableList<String> items =FXCollections.observableArrayList (
             "Cenoura", "Carne", "Batata", "Presunto");
         list.setItems(items);
-        
-        System.out.println(list.getFocusModel().getFocusedIndex());
-        
         list.setPrefWidth(150);
         list.setPrefHeight(370);
         
+        Label labelData = new Label("Data para busca:");
+        labelData.setStyle("-fx-font: 16px \"Georgia\"; -fx-text-fill: black");
         
-        Label label1 = new Label("Data desejada:");
-        label1.setStyle("-fx-font: 16px \"Georgia\"; -fx-text-fill: black");
         TextField dia = new TextField();
         dia.setPromptText("Dia");
+        dia.setMaxWidth(38);
         TextField mes = new TextField();
-        mes.setPromptText("Mes");
+        mes.setPromptText("Mês");
+        mes.setMaxWidth(38);
         TextField ano = new TextField();
         ano.setPromptText("Ano");
-        
-        
-        dia.setMaxWidth(38);
-        mes.setMaxWidth(38);
         ano.setMaxWidth(55);
         
-        HBox data = new HBox();
-        data.setSpacing(10);
-        data.setAlignment(Pos.CENTER);
-        data.getChildren().addAll(dia, mes, ano);
-        
-        
-        Button btnData = new Button("Enviar");
-        btnData.setStyle("-fx-font: 14px Georgia; -fx-padding: 7 53px;");
-        btnData.setOnAction(new EventHandler<ActionEvent>() {
+        Button enviar = new Button("Enviar");
+        enviar.setStyle("-fx-font: 14px Georgia; -fx-padding: 7 53px;");
+        enviar.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 System.out.println("Data: " + dia.getText() + ' ' + mes.getText() + ' ' + ano.getText());
                 System.out.println("Selecionado: " + list.getFocusModel().getFocusedIndex());
             }
         });
         
+        HBox data = getHBox();
+        data.getChildren().addAll(dia, mes, ano);
         
-        VBox vb = new VBox();
-        vb.setSpacing(10);
-        vb.setAlignment(Pos.CENTER);
-        vb.getChildren().addAll(label1, data, btnData, list);
-        vb.setStyle("-fx-padding: 10.0;");
+        VBox vb = getVBox();
+        vb.getChildren().addAll(labelData, data, enviar, list);
         
         central.getChildren().add(vb);
         
         return central;
+    }
+    
+    private VBox getVBox() {
+        VBox vb = new VBox();
+        vb.setSpacing(10);
+        vb.setAlignment(Pos.CENTER);
+        vb.setStyle("-fx-padding: 10.0;");
+        return vb;
+    }
+    
+    private HBox getHBox() {
+        HBox hb = new HBox();
+        hb.setSpacing(10);
+        hb.setAlignment(Pos.CENTER);
+        return hb;
     }
 
     public static void main(String[] args) {
