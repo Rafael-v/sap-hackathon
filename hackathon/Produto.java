@@ -13,12 +13,16 @@ public class Produto {
     String Observacoes;            // Detalhes do produto que podem ser importantes para considerar
     List<Remessa> Dados;           // Cada remessa de entrada daquele produto no varejo, diferentes datas = diferentes quantidades
 
-    Produto(long c, int cat, float p, String obs, List<Remessa> r){
+    Produto(long c, int cat, float p, String obs){
         Codigo = c;
         Categoria = cat;
         Preco_Ideal = p;
         Observacoes = obs;
-        Dados = r;
+        Dados = new ArrayList<Remessa>();
+    }
+    
+    public void setRemessa(Remessa s){
+        Dados.add(s);
     }
 
     public long getCodigo() {
