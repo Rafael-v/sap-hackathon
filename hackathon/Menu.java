@@ -31,18 +31,12 @@ public class Menu {
     private HttpJSONService http = new HttpJSONService();
     private List<List> jsondata;
     private List<List> jsoncolumn;
-    ArrayList<Produto> pdt = new ArrayList();
 
-    Menu(VBox vb) {
-        vb.setSpacing(10);
-        vb.setPadding(new Insets(5,5,5,10));
-        vb.setMaxWidth(80);
-        vb.setStyle("-fx-background-color: #00008B;");
-        vb.getChildren().addAll(bcad, bdata);
+    public Menu() {
         editbuttons();
     }
     
-    public void loadfile(Stage stage){
+    public void loadfile(Stage stage, ArrayList<Produto> pdt){
         bdata.setOnAction(ev -> {
           Map json = null;
           Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -69,7 +63,7 @@ public class Menu {
             if(jsoncolumn.size() == 3){
                 for(int i = 0; i < jsondata.size(); i++){
                     List datai = (List) jsondata.get(i);
-                    Produto ptemp = new Produto((int) datai.get(0),(int) datai.get(1),(float) 0.0,(String) datai.get(2));
+                    Produto ptemp = new Produto((String) datai.get(0),(int) datai.get(1),(float) 0.0,(String) datai.get(2));
                     pdt.add(ptemp);
                 }
             }
@@ -77,7 +71,11 @@ public class Menu {
             else if(jsoncolumn.size() == 4){
                 if(pdt != null){
                     for(int i = 0; i < jsondata.size(); i++){
-                        int index = searchpdt((int) jsondata.get(i).get(0));
+                        int index;
+                        for(index = 0; index < pdt.size(); index++){
+                            if(pdt.get(index).Nome == (String) jsondata.get(index).get(0))
+                                break;
+                        }
                         SimpleDateFormat sd = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
                         try {
                             Date date = sd.parse((String) jsondata.get(i).get(1));
@@ -121,13 +119,5 @@ public class Menu {
         } finally {
             scan.close();
         }
-    }
-    
-    public int searchpdt(int cod){
-        for(int i = 0; i < pdt.size(); i++){
-            if(pdt.get(i).Codigo == cod)
-                return i;
-        }
-        return -1;
     }
 }
